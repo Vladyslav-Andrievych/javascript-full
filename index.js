@@ -1,39 +1,39 @@
 /* eslint-disable */
 
-/* оператор || (OR) */
-console.log('false || true:', false || true); //true
-console.log('false || true || false:', false || true || false); //true
-console.log('false || false || false:', false || false || false); //false
+if (true) console.log("I'm in");
 
-/* оператор && (AND) */
-console.log('false && true:', false && true); // false
-console.log('false && true && false:', false && true && false); //false
-console.log('true && true && true:', true && true && true); //true
+if (false) {
+  console.log("I'm not in");
+}
 
-/* Логические операторы могут применятся к любым типам данных */
+if ('text') {
+  console.log('Yes');
+}
 
-/* || находит первое истинное значение */
-console.log("'text' || false:", 'text' || false); //text
-console.log("true || 'text':", true || 'text'); // true
-console.log(
-  "undefined || null || 0 || '' || null:",
-  undefined || null || 0 || '' || null
-); //null
+if (null) {
+  console.log('Yes');
+} else {
+  console.log('Else');
+}
 
-const customAmount = null; // не выводим
-const defaultAmount = 17; // не выводим
-const amount = customAmount || defaultAmount; // выводим значение переменной amount в формате console.log('amount:', amount);
-console.log('amount:', amount); // 17
-/* && находит первое ложное значение */
-console.log("'text' && false:", 'text' && false); // false
-console.log("true && 'text':", true && 'text'); // text
-console.log(
-  "undefined && null && 0 && '' && null:",
-  undefined && null && 0 && '' && null
-); //undefined
+// create age variable here
 
-/* оператор отрицания (OR) */
-console.log('!true:', !true); //false
-console.log('!false:', !false); //true
-console.log("!'text':", !'text'); //false
-console.log("!!'text':", !!'text'); //true
+const age = 20;
+
+if (age < 16) {
+  console.log('Too young');
+} else if (age >= 16 && age < 18) {
+  console.log('Almost ready');
+} else if (age >= 18 && age < 65) {
+  console.log('Ready');
+} else {
+  console.log('Else');
+}
+
+// Тернаный оператор ? : ( const result = условие ? значение1 : значение2; )
+
+// create amount variable here
+
+const amount = 5;
+
+const result = amount > 17 ? 'full' : 'empty';
