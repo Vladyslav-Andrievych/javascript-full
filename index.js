@@ -1,39 +1,25 @@
 /* eslint-disable */
 
-if (true) console.log("I'm in");
+/* Этот код менять не нужно */
+const defaultUserName = 'anonymus';
+const userName = 'John';
+const anotherUser = null;
+const isAdmin = false;
+const message = 'text';
+const anotherMessage = 'text as well';
+const isLoggedIn = Boolean(userName);
 
-if (false) {
-  console.log("I'm not in");
-}
+/* В коде ниже нужно использовать правильные операторы после знака присваивания */
+const activeUser = anotherUser || defaultUserName;
+const hasAccess = isAdmin || isLoggedIn;
+const isTruthy = message !== anotherMessage;
+const isFalsy = !isLoggedIn;
+const isNotTrue = typeof message === 'number';
+const isTrue = typeof message !== 'boolean';
 
-if ('text') {
-  console.log('Yes');
-}
-
-if (null) {
-  console.log('Yes');
-} else {
-  console.log('Else');
-}
-
-// create age variable here
-
-const age = 20;
-
-if (age < 16) {
-  console.log('Too young');
-} else if (age >= 16 && age < 18) {
-  console.log('Almost ready');
-} else if (age >= 18 && age < 65) {
-  console.log('Ready');
-} else {
-  console.log('Else');
-}
-
-// Тернаный оператор ? : ( const result = условие ? значение1 : значение2; )
-
-// create amount variable here
-
-const amount = 5;
-
-const result = amount > 17 ? 'full' : 'empty';
+console.log(activeUser); //'anonymus'
+console.log(hasAccess); //true
+console.log(isTruthy); //true
+console.log(isFalsy); //false
+console.log(isNotTrue); //false
+console.log(isTrue); //true
