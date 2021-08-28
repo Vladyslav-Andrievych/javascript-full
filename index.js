@@ -1,43 +1,39 @@
 /* eslint-disable */
 
-/* Результатом сравнения является булевое значение */
+/* оператор || (OR) */
+console.log('false || true:', false || true); //true
+console.log('false || true || false:', false || true || false); //true
+console.log('false || false || false:', false || false || false); //false
 
-/* Сравнение чисел */
-const a = 17;
-const b = 5;
-console.log('a > b:', a > b); // true
-console.log('a <= b:', a <= b); //false
-console.log('a == b:', a == b); //false
-console.log('a != b:', a != b); //true
+/* оператор && (AND) */
+console.log('false && true:', false && true); // false
+console.log('false && true && false:', false && true && false); //false
+console.log('true && true && true:', true && true && true); //true
 
-/* Сравнение строк */
-console.log("'a' < 'b':", 'a' < 'b'); //true
-console.log("'ab' > 'a':", 'ab' > 'a'); //true
+/* Логические операторы могут применятся к любым типам данных */
 
-/* При сравнении переменных разных типов они преобразуются в числа */
-console.log("'17' > 1:", '17' > 1); //true
+/* || находит первое истинное значение */
+console.log("'text' || false:", 'text' || false); //text
+console.log("true || 'text':", true || 'text'); // true
+console.log(
+  "undefined || null || 0 || '' || null:",
+  undefined || null || 0 || '' || null
+); //null
 
-/* Строгое сравнение */
-console.log('17 === 1:', 17 === 1); //false
-console.log('17 === 17:', 17 === 17); //true
-console.log("17 === '17':", 17 === '17'); //false
-console.log('17 === true:', 17 === true); //false
-console.log("'0' === '':", '0' === ''); //false
-console.log('true === false:', true === false); //false
-console.log('true === true:', true === true); //true
-console.log('null === undefined:', null === undefined); //false
-console.log('false === 0:', false === 0); //false
+const customAmount = null; // не выводим
+const defaultAmount = 17; // не выводим
+const amount = customAmount || defaultAmount; // выводим значение переменной amount в формате console.log('amount:', amount);
+console.log('amount:', amount); // 17
+/* && находит первое ложное значение */
+console.log("'text' && false:", 'text' && false); // false
+console.log("true && 'text':", true && 'text'); // text
+console.log(
+  "undefined && null && 0 && '' && null:",
+  undefined && null && 0 && '' && null
+); //undefined
 
-/* Нестрогое сравнение */
-console.log("17 == '17':", 17 == '17'); //true
-console.log("'0' == '':", '0' == ''); //false
-console.log("0 == '':", 0 == ''); //true
-console.log('null == undefined:', null == undefined); //true
-console.log('false == 0:', false == 0); //true
-
-/* Осторожно c null и undefined */
-console.log('undefined == null:', undefined == null); //true
-console.log('undefined == 0:', undefined == 0); //false
-console.log('null == 0:', null == 0); //false
-console.log('undefined < 0:', undefined < 0); // false
-console.log('undefined > 0:', undefined > 0); // false
+/* оператор отрицания (OR) */
+console.log('!true:', !true); //false
+console.log('!false:', !false); //true
+console.log("!'text':", !'text'); //false
+console.log("!!'text':", !!'text'); //true
