@@ -1,15 +1,24 @@
-function run() {
-  var a = 0;
+function getPrimes(num) {
+  for (let i = 2; i <= num; i += 1) {
+    if (i === 2) {
+      console.log(i);
+      continue;
+    }
 
-  if (a == 1) {
-    return c;
+    let flag = false;
+
+    for (let j = 2; j < i; j += 1) {
+      if (i % j === 0) {
+        break;
+      } else if (j === i - 1) {
+        flag = true;
+      }
+    }
+
+    if (flag) {
+      console.log(i);
+    }
   }
-
-  for (let i = 1; i < 10; i++) {
-    console.log(i);
-  }
-
-  return (d = a);
 }
 
-run();
+getPrimes(62);
