@@ -22,3 +22,5 @@ function getPrimes(num) {
 }
 
 getPrimes(62);
+
+// нечетные числа на промежутке
