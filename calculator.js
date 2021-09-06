@@ -1,27 +1,26 @@
-/* eslint-disable default-case */
+export const reverseArray = (arr) =>
+  Array.isArray(arr) ? [...arr].reverse() : null;
 
-export const calc = (expression) => {
-  if (typeof expression !== 'string') {
-    return null;
+export const withdraw = (clients, balances, client, amount) => {
+  const index = clients.indexOf(client);
+
+  if (balances[index] - amount < 0) {
+    return -1;
   }
 
-  const [a, operation, b] = expression.split(' ');
-  let result;
+  balances[index] -= amount;
 
-  switch (operation) {
-    case '+':
-      result = +a + +b;
-      break;
-    case '-':
-      result = +a - +b;
-      break;
-    case '*':
-      result = +a * +b;
-      break;
-    case '/':
-      result = +a / +b;
-      break;
+  return balances[index];
+};
+
+export const getAdults = (obj) => {
+  const result = {};
+
+  for (const key in obj) {
+    if (obj[key] >= 18) {
+      result[key] = obj[key];
+    }
   }
 
-  return `${expression} = ${result}`;
+  return result;
 };
