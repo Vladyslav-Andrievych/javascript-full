@@ -1,36 +1,55 @@
-function saveCalls(func) {
-  const calls = [];
+/*
+eslint-disable max-classes-per-file
+ */
 
-  function withMemory(...args) {
-    calls.push(args);
-    return func.call(this, ...args);
+class User {
+  constructor(id, name, sessionId) {
+    this._id = id;
+    this._name = name;
+    this._sessionId = sessionId;
   }
 
-  withMemory.calls = calls;
+  get id() {
+    return this._id;
+  }
 
-  return withMemory;
+  get name() {
+    return this._name;
+  }
+
+  get sessionId() {
+    return this._sessionId;
+  }
 }
 
-// function test(a, b) {
-//   return a + b;
-// }
+class UserRepository {
+  constructor(arrOfUsers) {
+    this._users = arrOfUsers;
+    this._users = Object.freeze(this._users); // без этой строки
+  }
 
-// const testWithMemory = saveCalls(test);
+  get users() {
+    return this._users;
+  }
 
-// console.log(testWithMemory(2, 2));
-// console.log(testWithMemory(4, 7));
+  getUserNames() {
+    return this._users.map(({ _name }) => _name);
+  }
 
-// console.log(testWithMemory.calls);
+  getUserIds() {
+    return this._users.map(({ _id }) => _id);
+  }
 
-const user = {
-  name: 'Vlad',
-  sayHi(age) {
-    return `Hello, my name is ${this.name}. I am ${age} years old`;
-  },
-};
+  getUserNameById(id) {
+    return this._users.find(({ _id }) => _id === id)._name;
+  }
+}
 
-const methodWithMemory = saveCalls(user.sayHi);
+const user1 = new User('1', 'Vlad', 'asdf1');
+const user2 = new User('2', 'Vasya', 'asdf2');
+const user3 = new User('3', 'Petya', 'asdf3');
+const user4 = new User('4', 'Nina', 'asdf4');
 
-console.log(methodWithMemory.apply(user));
-console.log(methodWithMemory.apply({ name: 'Tom' }, [21]));
-console.log(methodWithMemory.calls);
+const userRepository1 = new UserRepository([user1, user2, user3, user4]);
+userRepository1.users = 'str'; // эта строка всё равно не поменяла бы значение свойства .users, так как нету setter
+console.log(userRepository1);
