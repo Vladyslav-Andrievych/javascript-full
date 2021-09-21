@@ -3,18 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DOM elements</title>
+    <title>Events propagation</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+      integrity="sha256-WAgYcAck1C1/zEl5sBl5cfyhxtLgKGdpI3oKyJffVRI="
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
-    <h1 class="title">I am <i>Front-End</i> developer</h1>
-    <p class="about">
-      I am good at <code>HTML / CSS</code> and <code>JavaScript</code>
-    </p>
-    <p class="plans">I will learn <b>Redux</b> and <b>React</b> soon</p>
-    <p class="goal">
-      And will become <b>world class</b> software engineer in a year
-    </p>
+    <div class="rect rect_div">
+      div
+      <p class="rect rect_p">
+        p
+        <span class="rect rect_span">span</span>
+      </p>
+    </div>
+    <div class="rect events-list"></div>
+    <button class="btn clear-btn">Clear</button>
+    <button class="btn remove-handlers-btn">Remove handleds</button>
+    <button class="btn attach-handlers-btn">Attach handleds</button>
     <script src="index.js"></script>
   </body>
 </html>
