@@ -1,58 +1,79 @@
-// валидация полей формы
+// Отрисовка арены
 
-const emailInputElem = document.querySelector('#email');
-const passwordInputElem = document.querySelector('#password');
-const emailErrorElem = document.querySelector('.error-text_email');
-const passwordErrorElem = document.querySelector('.error-text_password');
+const arenaElem = document.querySelector('.arena');
 
-const isRequired = (value) => (value ? undefined : 'Required');
+const generateArrayOfNumbers = (from, to) => {
+  const result = [];
 
-const isEmail = (value) =>
-  value.includes('@') ? undefined : 'Should be an email';
+  for (let i = from; i <= to; i += 1) {
+    result.push(i);
+  }
 
-const validatorByFields = {
-  email: [isRequired, isEmail],
-  password: [isRequired],
+  return result;
 };
 
-const validator = (fieldName, value) => {
-  const validators = validatorByFields[fieldName];
-  return validators
-    .map((validatorFunc) => validatorFunc(value))
-    .filter((errorText) => errorText)
-    .join(', ');
+const getLineSeat = () =>
+  generateArrayOfNumbers(1, 10)
+    .map(
+      (seatNumber) => `
+        <div
+            class="sector__seat"
+            data-seat-number="${seatNumber}"
+        ></div>
+    `
+    )
+    .join('');
+
+const getSectorLine = () => {
+  const lineSeats = getLineSeat();
+
+  return generateArrayOfNumbers(1, 10)
+    .map(
+      (lineNumber) => `
+        <div
+            class="sector__line"
+            data-line-number="${lineNumber}"
+        >${lineSeats}</div>
+    `
+    )
+    .join('');
 };
 
-const onEmailChange = (event) => {
-  const textError = validator('email', event.target.value);
+const renderArena = () => {
+  const sectorLines = getSectorLine();
 
-  emailErrorElem.textContent = textError;
+  const renderedMarkUp = generateArrayOfNumbers(1, 3)
+    .map(
+      (sectorNumber) => `
+        <div
+            class="sector"
+            data-sector-number="${sectorNumber}"
+        >${sectorLines}</div>
+    `
+    )
+    .join('');
+
+  arenaElem.innerHTML = renderedMarkUp;
 };
 
-const onPasswordChange = (event) => {
-  const textError = validator('password', event.target.value);
+renderArena();
 
-  passwordErrorElem.textContent = textError;
+// Выбирая любое место сектора, получаем номера сектора, ряда и места
+
+const onSeatSelect = (event) => {
+  const isSeat = event.target.classList.contains('sector__seat');
+
+  if (!isSeat) {
+    return;
+  }
+
+  const spanSelectedSeatElem = document.querySelector('.board__selected-seat');
+
+  const seatNumber = event.target.dataset.seatNumber;
+  const lineNumber = event.target.closest('.sector__line').dataset.lineNumber;
+  const sectorNumber = event.target.closest('.sector').dataset.sectorNumber;
+
+  spanSelectedSeatElem.textContent = `S ${sectorNumber} - L ${lineNumber} - S ${seatNumber}`;
 };
 
-emailInputElem.addEventListener('input', onEmailChange);
-passwordInputElem.addEventListener('input', onPasswordChange);
-
-// в alert выводим значение, которые ввели в поля формы
-
-const formElem = document.querySelector('.login-form');
-
-const onFormSubmit = (event) => {
-  event.preventDefault();
-
-  const formFields = [...new FormData(formElem)];
-
-  const formData = formFields.reduce(
-    (acc, [prop, value]) => ({ ...acc, [prop]: value }),
-    {}
-  );
-
-  alert(JSON.stringify(formData));
-};
-
-formElem.addEventListener('submit', onFormSubmit);
+arenaElem.addEventListener('click', onSeatSelect);
