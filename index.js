@@ -1,79 +1,92 @@
-// Отрисовка арены
+const listElem = document.querySelector('.list');
 
-const arenaElem = document.querySelector('.arena');
+const tasks = [
+  { id: 1, text: 'Buy milk', done: false },
+  { id: 2, text: 'Pick up Tom from airport', done: false },
+  { id: 3, text: 'Visit party', done: false },
+  { id: 4, text: 'Visit doctor', done: true },
+  { id: 5, text: 'Buy meat', done: true },
+];
 
-const generateArrayOfNumbers = (from, to) => {
-  const result = [];
+const renderTasks = (tasksList) => {
+  const tasksElems = tasksList
+    .sort((a, b) => a.done - b.done)
+    .map(({ id, text, done }) => {
+      const listItemElem = document.createElement('li');
+      listItemElem.classList.add('list__item');
+      const checkbox = document.createElement('input');
+      checkbox.setAttribute('type', 'checkbox');
+      checkbox.checked = done;
+      checkbox.classList.add('list__item-checkbox');
+      checkbox.dataset.id = id;
+      if (done) {
+        listItemElem.classList.add('list__item_done');
+      }
+      listItemElem.append(checkbox, text);
 
-  for (let i = from; i <= to; i += 1) {
-    result.push(i);
-  }
+      return listItemElem;
+    });
 
-  return result;
+  listElem.append(...tasksElems);
 };
 
-const getLineSeat = () =>
-  generateArrayOfNumbers(1, 10)
-    .map(
-      (seatNumber) => `
-        <div
-            class="sector__seat"
-            data-seat-number="${seatNumber}"
-        ></div>
-    `
-    )
-    .join('');
+renderTasks(tasks);
 
-const getSectorLine = () => {
-  const lineSeats = getLineSeat();
+// создание дел
 
-  return generateArrayOfNumbers(1, 10)
-    .map(
-      (lineNumber) => `
-        <div
-            class="sector__line"
-            data-line-number="${lineNumber}"
-        >${lineSeats}</div>
-    `
-    )
-    .join('');
-};
+const createTaskElem = document.querySelector('.create-task-btn');
 
-const renderArena = () => {
-  const sectorLines = getSectorLine();
+function counter() {
+  let count = 5;
 
-  const renderedMarkUp = generateArrayOfNumbers(1, 3)
-    .map(
-      (sectorNumber) => `
-        <div
-            class="sector"
-            data-sector-number="${sectorNumber}"
-        >${sectorLines}</div>
-    `
-    )
-    .join('');
+  return function () {
+    count += 1;
+    return count;
+  };
+}
 
-  arenaElem.innerHTML = renderedMarkUp;
-};
+const createId = counter();
 
-renderArena();
+const onCreateTask = (event) => {
+  const taskInputElem = document.querySelector('.task-input');
 
-// Выбирая любое место сектора, получаем номера сектора, ряда и места
-
-const onSeatSelect = (event) => {
-  const isSeat = event.target.classList.contains('sector__seat');
-
-  if (!isSeat) {
+  const isFilled = taskInputElem.value;
+  if (!isFilled) {
     return;
   }
 
-  const spanSelectedSeatElem = document.querySelector('.board__selected-seat');
+  const id = createId();
 
-  const seatNumber = event.target.dataset.seatNumber;
-  const lineNumber = event.target.closest('.sector__line').dataset.lineNumber;
-  const sectorNumber = event.target.closest('.sector').dataset.sectorNumber;
+  tasks.push({ id, text: taskInputElem.value, done: false });
 
-  spanSelectedSeatElem.textContent = `S ${sectorNumber} - L ${lineNumber} - S ${seatNumber}`;
+  taskInputElem.value = '';
+
+  listElem.innerHTML = '';
+  renderTasks(tasks);
 };
 
-arenaElem.addEventListener('click', onSeatSelect);
+createTaskElem.addEventListener('click', onCreateTask);
+
+// переключатель выполнено/не выполнено
+
+const onClickCkeckbox = (event) => {
+  const isCheckbox = event.target.classList.contains('list__item-checkbox');
+  if (!isCheckbox) {
+    return;
+  }
+
+  const taskIndex = tasks.findIndex(
+    (task) => task.id === Number(event.target.dataset.id)
+  );
+
+  if (tasks[taskIndex].done === false) {
+    tasks[taskIndex].done = true;
+  } else {
+    tasks[taskIndex].done = false;
+  }
+
+  listElem.innerHTML = '';
+  renderTasks(tasks);
+};
+
+listElem.addEventListener('click', onClickCkeckbox);
