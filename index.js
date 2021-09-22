@@ -1,103 +1,58 @@
-const logger = (text, color) => {
-  const eventsListElem = document.querySelector('.events-list');
+// валидация полей формы
 
-  eventsListElem.innerHTML += `<span style="color: ${color}; margin-left: 8px">${text}</span>`;
+const emailInputElem = document.querySelector('#email');
+const passwordInputElem = document.querySelector('#password');
+const emailErrorElem = document.querySelector('.error-text_email');
+const passwordErrorElem = document.querySelector('.error-text_password');
+
+const isRequired = (value) => (value ? undefined : 'Required');
+
+const isEmail = (value) =>
+  value.includes('@') ? undefined : 'Should be an email';
+
+const validatorByFields = {
+  email: [isRequired, isEmail],
+  password: [isRequired],
 };
 
-const cleanEventsList = () => {
-  const eventsListElem = document.querySelector('.events-list');
-
-  eventsListElem.innerHTML = '';
+const validator = (fieldName, value) => {
+  const validators = validatorByFields[fieldName];
+  return validators
+    .map((validatorFunc) => validatorFunc(value))
+    .filter((errorText) => errorText)
+    .join(', ');
 };
 
-const attachHandlers = (
-  func1ForSpan,
-  func2ForSpan,
-  func1ForP,
-  func2ForP,
-  func1ForDiv,
-  func2ForDiv
-) => {
-  const spanElem = document.querySelector('.rect_span');
-  spanElem.addEventListener('click', func1ForSpan, true);
-  spanElem.addEventListener('click', func2ForSpan);
+const onEmailChange = (event) => {
+  const textError = validator('email', event.target.value);
 
-  const pElem = document.querySelector('.rect_p');
-  pElem.addEventListener('click', func1ForP, true);
-  pElem.addEventListener('click', func2ForP);
-
-  const divElem = document.querySelector('.rect_div');
-  divElem.addEventListener('click', func1ForDiv, true);
-  divElem.addEventListener('click', func2ForDiv);
+  emailErrorElem.textContent = textError;
 };
 
-const removeHandlers = (
-  func1ForSpan,
-  func2ForSpan,
-  func1ForP,
-  func2ForP,
-  func1ForDiv,
-  func2ForDiv
-) => {
-  const spanElem = document.querySelector('.rect_span');
-  spanElem.removeEventListener('click', func1ForSpan, true);
-  spanElem.removeEventListener('click', func2ForSpan);
+const onPasswordChange = (event) => {
+  const textError = validator('password', event.target.value);
 
-  const pElem = document.querySelector('.rect_p');
-  pElem.removeEventListener('click', func1ForP, true);
-  pElem.removeEventListener('click', func2ForP);
-
-  const divElem = document.querySelector('.rect_div');
-  divElem.removeEventListener('click', func1ForDiv, true);
-  divElem.removeEventListener('click', func2ForDiv);
+  passwordErrorElem.textContent = textError;
 };
 
-const loggerGreySpan = logger.bind(null, 'SPAN', 'grey');
-const loggerGreenSpan = logger.bind(null, 'SPAN', 'green');
+emailInputElem.addEventListener('input', onEmailChange);
+passwordInputElem.addEventListener('input', onPasswordChange);
 
-const loggerGreyP = logger.bind(null, 'P', 'grey');
-const loggerGreenP = logger.bind(null, 'P', 'green');
+// в alert выводим значение, которые ввели в поля формы
 
-const loggerGreyDiv = logger.bind(null, 'DIV', 'grey');
-const loggerGreenDiv = logger.bind(null, 'DIV', 'green');
+const formElem = document.querySelector('.login-form');
 
-const divElem = document.querySelector('.rect_div');
-divElem.addEventListener('click', loggerGreyDiv, true);
-divElem.addEventListener('click', loggerGreenDiv);
+const onFormSubmit = (event) => {
+  event.preventDefault();
 
-const pElem = document.querySelector('.rect_p');
-pElem.addEventListener('click', loggerGreyP, true);
-pElem.addEventListener('click', loggerGreenP);
+  const formFields = [...new FormData(formElem)];
 
-const spanElem = document.querySelector('.rect_span');
-spanElem.addEventListener('click', loggerGreySpan, true);
-spanElem.addEventListener('click', loggerGreenSpan);
-
-const clearBtnElem = document.querySelector('.clear-btn');
-clearBtnElem.addEventListener('click', cleanEventsList);
-
-const removeHandlersBtn = document.querySelector('.remove-handlers-btn');
-removeHandlersBtn.addEventListener('click', () => {
-  removeHandlers.call(
-    null,
-    loggerGreySpan,
-    loggerGreenSpan,
-    loggerGreyP,
-    loggerGreenP,
-    loggerGreyDiv,
-    loggerGreenDiv
+  const formData = formFields.reduce(
+    (acc, [prop, value]) => ({ ...acc, [prop]: value }),
+    {}
   );
-});
 
-const attachHandlersBtn = document.querySelector('.attach-handlers-btn');
-attachHandlersBtn.addEventListener('click', () => {
-  attachHandlers.call(
-    null,
-    loggerGreySpan,
-    loggerGreenSpan,
-    loggerGreyP,
-    loggerGreenP,
-    loggerGreyDiv,
-    loggerGreenDiv
-  );
-});
+  alert(JSON.stringify(formData));
+};
+
+formElem.addEventListener('submit', onFormSubmit);
